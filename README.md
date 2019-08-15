@@ -5,4 +5,6 @@
 # Our supervisor is: Ammer Albahem
 # Group leader is: Lian
 # Scrum Master is: Josephine
+# Group member: Wenhan Shou
+# Group member: Terrance
 # Trello url: https://trello.com/b/2IWCGzv4/match-key
