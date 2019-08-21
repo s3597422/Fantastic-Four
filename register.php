@@ -2,10 +2,15 @@
 	<body>
 
 	<?php
+	$servername = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "myDBPDO";
+
 		error_reporting( E_ALL&~E_NOTICE );
 	
 		if(isset($_POST['username']) == FALSE){
-			header('Location: ../client/register.html');
+			header('Location: ../pp/register.html');
 		}
 	
 	
@@ -13,39 +18,62 @@
 		$entered_username = $_POST['username'];
 		//Receive password from client side
 		$entered_password = $_POST['password'];
-	
-
-	
-	if($entered_username!="" & $entered_password != ""){
-		$register = 0;
-		//read users.txt line by line
-		foreach(file('../database/users.txt') as $line) {
-			//split each line as two parts
-			list($username, $password) = explode(",",$line);
-			$doc_numn2 = isset($value[1]) ? $value[1] : null;
-			//verify if an exist user with the same username
-			if($username == $entered_username){
-				$register = 1;
-				break;
+		//Receive confirm password from client side
+		$entered_cpassword = $_POST['cpassword'];
+		//Receive email from client side
+		$entered_email = $_POST['email'];
+		//Connection to DB
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
+		$sql = "SELECT id, username, password,email FROM userinfo WHERE username='$entered_username'";
+		$result = $conn->query($sql);
+	if($entered_username!="" & $entered_password != "" & $entered_cpassword != "" & $entered_email!= ""){
+		if ($result->num_rows > 0) {
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				$id1 = $row["id"];
+				$U1 = $row["username"];
+				$P = $row["password"];
+				$E = $row["email"];
+			}
+			echo "Username ".$row["username"]." has exsit";
+			echo "<br/>Go <a href='../pp/register.html'>back</a> to register or <a href='../pp/login.html'>login</a>";
+		}			
+		else
+		{
+			if($entered_password==$entered_cpassword){
+			$register = 0;
+			try {
+				$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+				// set the PDO error mode to exception
+				$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$sql = "INSERT INTO userinfo (username, password, email)
+				VALUES ('$entered_username', '$entered_password', '$entered_email')";
+				// use exec() because no results are returned
+				$conn->exec($sql);
+				//$conn->exec("INSERT INTO userinfo (Username, password, email)
+				//VALUES ('Username', 'password', 'email@email.com')");
+				//$conn->commit();
+				echo "New record created successfully";
+			}
+			catch(PDOException $e)
+			{
+				echo $sql . "<br>" . $e->getMessage();
+			}
+			echo "<br/>Go <a href='../pp/register.html'>back</a> to register or <a href='../pp/login.html'>login</a>";
+			}
+			else {
+				echo "Password and Confirm Password must be the same";
+				echo "<br/>Go <a href='../pp/register.html'>back</a> to register or <a href='../pp/login.html'>login</a>";
 			}
 		}
-		
-		if($register == 1){
-			echo "The user is exist!";
-		}else{
-			//open a file named "text.txt"
-			$file = fopen("../database/users.txt","a");
-			//insert this user into the users.txt file
-			fwrite($file,$entered_username.",".$entered_password."\n");
-			//close the "$file"
-			fclose($file);
-			echo "The user has been added to the database/users.txt";
-		}
-		
-			echo "<br/>Go <a href='../client/register.html'>back</a> to register or <a href='../client/login.html'>login</a>, or check the <a href='../database/users.txt'>users.txt</a>";
-	}else{
+	}
+	else{
 		echo "Username and Password cannot be empty!";
-		echo "<br/>Go <a href='../client/register.html'>back</a> to register or <a href='../client/login.html'>login</a>, or check the <a href='../database/users.txt'>users.txt</a>";
+		echo "<br/>Go <a href='../pp/register.html'>back</a> to register or <a href='../pp/login.html'>login</a>";
 	}
 	?>
 

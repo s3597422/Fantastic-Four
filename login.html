@@ -3,7 +3,7 @@
 
 		<h2>Match Key</h2>
 
-		<form action="../server/login.php" method="POST">
+		<form action="../pp/login.php" method="POST">
 
 			Username: <input type="text" name="username" id="username">
 			<br/><br/>
@@ -13,7 +13,7 @@
 			<button type="submit" onclick="hashPassword()">Submit to Login</button>
 		</form>
 		
-		<a href=../client/register.html>Go to Register page</a>
+		<a href=../pp/register.html>Go to Register page</a>
 
 		<script src="js/sha256.js"></script>
 			<script type="text/javascript">
@@ -25,7 +25,6 @@
 				document.getElementById("password").value = hash;
 			}
 		</script>
-		
 	</body>
 </html>
 

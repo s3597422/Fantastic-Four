@@ -1,29 +1,21 @@
 <html>
 	<body>
 
-		<h2>Lab 10 Register</h2>
+		<h2>Match Key</h2>
 
-		<form action="../server/register.php" method="POST">
+		<form action="../pp/register.php" method="POST">
 
 		Username: <input type="text" name="username" id="username">
 		<br/><br/>
 		Password: <input type="password" name="password" id="password">
 		<br/><br/>
+		Confirm Password: <input type="password" name="cpassword" id="cpassword">
+		<br/><br/>
+		E-mail:<input type="email" name="email" id="email">
+		<br/><br/>
 		<button type="submit" onclick="hashPassword()">Submit to register</button>
 		</form>
-		<a href=../client/login.html>Go to Login page</a>
-
-		<script src="js/sha256.js"></script>
-		<script type="text/javascript">
-			function hashPassword() {
-				var input = document.getElementById('password').value;
-			
-				var hash = SHA256.hash(input);
-			
-				document.getElementById("password").innerHTML = hash;
-				document.getElementById("password").value = hash;
-			}
-		</script>
+		<a href=../PP/login.html>Go to Login page</a>
 
 	</body>
 </html>
