@@ -57,7 +57,39 @@
 				//$conn->exec("INSERT INTO userinfo (Username, password, email)
 				//VALUES ('Username', 'password', 'email@email.com')");
 				//$conn->commit();
-				echo "New record created successfully";
+				
+				$account="s3557899@student.rmit.edu.au";
+				$password="19971021Ab.";
+				$to=$entered_email;
+				$from="s3557899@student.rmit.edu.au";
+				$from_name="Chenjie";
+				$msg="Hi ".$U1."<br/>Welcome to use Match Key! Please confirm This is your personal action for register Matchkey account! <a href='localhost/pp/register.html'>matchkey<a>"; // HTML message
+				$subject="HTML message";
+				/*End Config*/
+
+				include("phpmailer/class.phpmailer.php");
+				$mail = new PHPMailer();
+				$mail->IsSMTP();
+				$mail->CharSet = 'UTF-8';
+				$mail->Host = "smtp.live.com";
+				$mail->SMTPAuth= true;
+				$mail->Port = 587;
+				$mail->Username= $account;
+				$mail->Password= $password;
+				$mail->SMTPSecure = 'tls';
+				$mail->From = $from;
+				$mail->FromName= $from_name;
+				$mail->isHTML(true);
+				$mail->Subject = $subject;
+				$mail->Body = $msg;
+				$mail->addAddress($to);
+				if(!$mail->send()){
+				 echo "Mailer Error: " . $mail->ErrorInfo;
+				}else{
+				 echo "E-Mail has been sent";
+				}
+				
+				echo "Please check your confirm e-mail!";
 			}
 			catch(PDOException $e)
 			{
